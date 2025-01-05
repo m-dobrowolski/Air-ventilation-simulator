@@ -80,9 +80,8 @@ class Game:
             elif event.key == pygame.K_s:
                 self.editor.display_save_window = True
                 self.editor.file_name_input.detect_collision()
-                # self.editor.save_map('test.json')
 
             if self.editor.display_save_window and event.key == pygame.K_RETURN:
                 self.editor.display_save_window = False
-                self.editor.save_map(self.editor.file_name_input.text)
+                self.editor.save_map(f'level_editor/maps/{self.editor.file_name_input.text}')
                 self.editor.file_name_input.text = "Map name"

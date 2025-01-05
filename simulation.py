@@ -59,9 +59,9 @@ def run_simulation(path_to_map, timesteps_num=1000):
     flow_down = mask(shape, map_data, FLOW_DOWN)
 
     is_flow_right = flow_right.any()
-    is_flow_up = flow_right.any()
-    is_flow_left = flow_right.any()
-    is_flow_down = flow_right.any()
+    is_flow_up = flow_up.any()
+    is_flow_left = flow_left.any()
+    is_flow_down = flow_down.any()
 
     # Initial Conditions
     # Fill whole map with ones and add some petrubations
@@ -131,6 +131,6 @@ def run_simulation(path_to_map, timesteps_num=1000):
         #     plt.cla()
 
         if it % 100 == 0:
-            plt.imshow(np.sqrt(ux**2+uy**2))
+            plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
             plt.pause(0.01)
             plt.cla()

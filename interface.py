@@ -1,5 +1,4 @@
 import os
-import sys
 
 from simulation import run_simulation
 from level_editor.game import Game
@@ -40,7 +39,6 @@ def choose_map():
                 return f'{MAPS_DIR}/{maps[choice - 1]}'
         except ValueError:
             wrong_choice()
-            continue
 
 
 def main():
