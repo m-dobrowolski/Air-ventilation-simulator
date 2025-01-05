@@ -47,7 +47,7 @@ def run_simulation(
     # Simulation parameters
     Nx          = 200 # resolution x-dir
     Ny          = 200 # resolution y-dir
-    tau         = 0.6 # collision timescale
+    tau         = 1.0 # collision timescale
     Nt          = timesteps_num # number of timesteps
 
     # Lattice speeds / weights
@@ -131,15 +131,19 @@ def run_simulation(
 
         F += -(1.0/tau) * (F - Feq)
 
-        if it >= skip_iterations:
-            if is_interactive:
-                plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
-                plt.legend()
+        if it >= skip_iterations and (is_interactive or it % 100 == 0):
+            velocity = np.sqrt(ux ** 2 + uy ** 2)
+            plt.cla()
 
+            plt.imshow(velocity, origin='lower', cmap='viridis')
+
+            obstacle_overlay = np.ma.masked_array(
+                np.ones_like(velocity),
+                mask=~obstacles
+            )
+            plt.imshow(obstacle_overlay, origin='lower', cmap='Grays_r')
+
+            if is_interactive:
                 plt.pause(0.001)
-                plt.cla()
             else:
-                if it % 100 == 0:
-                    plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
-                    plt.pause(0.01)
-                    plt.cla()
+                plt.pause(0.01)
