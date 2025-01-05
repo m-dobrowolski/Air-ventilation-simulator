@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import signal
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
@@ -12,6 +13,8 @@ FLOW_UP = 4
 FLOW_LEFT = 5
 FLOW_DOWN = 6
 
+RUNNING = True
+
 
 def load_map(path):
     with open(path, 'r') as fh:
@@ -19,6 +22,7 @@ def load_map(path):
 
     map_data = json.loads(data)
     return np.array(map_data)
+
 
 def mask(shape, map_data, required_type):
     data = np.full(shape, False)
@@ -32,6 +36,18 @@ def mask(shape, map_data, required_type):
                 data[start_y:end_y, start_x:end_x] = True
     return data
 
+
+def handle_close(event):
+    global RUNNING
+    RUNNING = False
+
+
+def exit_gracefully():
+    global RUNNING
+    print("Exiting gracefully...")
+    RUNNING = False
+
+
 def run_simulation(
         path_to_map,
         timesteps_num=2000,
@@ -42,13 +58,18 @@ def run_simulation(
         left_speed=1.2,
         down_speed=1.2
     ):
+    global RUNNING
+    RUNNING = True
+
+    signal.signal(signal.SIGINT, lambda sig, frame: exit_gracefully())
+
     map_data = load_map(path_to_map)
 
     # Simulation parameters
-    Nx          = 200 # resolution x-dir
-    Ny          = 200 # resolution y-dir
-    tau         = 1.0 # collision timescale
-    Nt          = timesteps_num # number of timesteps
+    Nx          = 200  # resolution x-dir
+    Ny          = 200  # resolution y-dir
+    tau         = 1.0  # collision timescale
+    Nt          = timesteps_num  # number of time steps
 
     # Lattice speeds / weights
     NL = 9
@@ -72,12 +93,15 @@ def run_simulation(
     is_flow_down = flow_down.any()
 
     # Initial Conditions
-    # Fill whole map with ones and add some petrubations
+    # Fill whole map with ones and add some perturbations
     F = np.ones((Ny,Nx,NL)) + 0.03*np.random.randn(Ny,Nx,NL)
 
     # Initial interior and outside conditions
     # F[outside, 3] = 1.5
     # F[interior, :] = 1
+
+    fig, ax = plt.subplots()
+    fig.canvas.mpl_connect('close_event', handle_close)
 
     if is_interactive:
         plt.ion()
@@ -133,17 +157,26 @@ def run_simulation(
 
         if it >= skip_iterations and (is_interactive or it % 100 == 0):
             velocity = np.sqrt(ux ** 2 + uy ** 2)
-            plt.cla()
+            ax.clear()
 
-            plt.imshow(velocity, origin='lower', cmap='viridis')
+            ax.imshow(velocity, origin='lower', cmap='viridis')
 
             obstacle_overlay = np.ma.masked_array(
                 np.ones_like(velocity),
                 mask=~obstacles
             )
-            plt.imshow(obstacle_overlay, origin='lower', cmap='Grays_r')
+            ax.imshow(obstacle_overlay, origin='lower', cmap='gray', alpha=0.5)
+
+            plt.draw()
 
             if is_interactive:
                 plt.pause(0.001)
             else:
+                pass
                 plt.pause(0.01)
+
+        if not RUNNING:
+            break
+
+    plt.close('all')
+
