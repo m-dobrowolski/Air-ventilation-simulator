@@ -33,14 +33,14 @@ def mask(shape, map_data, required_type):
                 data[start_y:end_y, start_x:end_x] = True
     return data
 
-def run_simulation(path_to_map):
+def run_simulation(path_to_map, timesteps_num=1000):
     map_data = load_map(path_to_map)
 
     # Simulation parameters
-    Nx          = 200 # map_data["Nx"]    # resolution x-dir
-    Ny          = 200 # map_data["Ny"]    # resolution y-dir
-    tau         = 0.6 # map_data["tau"]    # collision timescale
-    Nt          = 1000 # map_data["Nt"]   # number of timesteps
+    Nx          = 200 # resolution x-dir
+    Ny          = 200 # resolution y-dir
+    tau         = 0.6 # collision timescale
+    Nt          = timesteps_num # number of timesteps
 
     # Lattice speeds / weights
     NL = 9

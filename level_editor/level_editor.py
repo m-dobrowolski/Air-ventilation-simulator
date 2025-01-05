@@ -4,8 +4,8 @@ import json
 from pygame.sprite import Group
 from pygame import Rect
 
-from tile import Tile
-from text_input import TextInput
+from level_editor.tile import Tile
+from level_editor.text_input import TextInput
 
 class LevelEditor():
     """A class to create game maps."""

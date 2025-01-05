@@ -1,6 +1,8 @@
 import os
+import sys
 
 from simulation import run_simulation
+from level_editor.game import Game
 
 MAPS_DIR = 'level_editor/maps'
 
@@ -55,7 +57,8 @@ def main():
             if map_path:
                 run_simulation(map_path)
         elif choice == '2':
-            pass
+            level_editor = Game()
+            level_editor.play()
         elif choice == 'q':
             break
         else:

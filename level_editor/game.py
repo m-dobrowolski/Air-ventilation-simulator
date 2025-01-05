@@ -2,11 +2,11 @@ import sys
 
 import pygame
 
-from settings import Settings
+from level_editor.settings import Settings
 # from tilemap import Tilemap
-from level_editor import LevelEditor
-from text_input import TextInput
-from tileset import Tileset
+from level_editor.level_editor import LevelEditor
+from level_editor.text_input import TextInput
+from level_editor.tileset import Tileset
 
 class Game:
     # game states
@@ -36,12 +36,13 @@ class Game:
         #                             24, 'black', 'white')
 
     def play(self):
-        while True:
+        game_active = True
+        while game_active:
             self.mouse_pos = pygame.mouse.get_pos()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    sys.exit()
+                    game_active = False
 
                 if self.current_text_box:
                     # pass every key to write in current text box
@@ -63,6 +64,7 @@ class Game:
             self.editor.draw()
             pygame.display.flip()
             self.clock.tick(60)
+        pygame.quit()
 
     def _in_editor_controls(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -84,9 +86,3 @@ class Game:
                 self.editor.display_save_window = False
                 self.editor.save_map(self.editor.file_name_input.text)
                 self.editor.file_name_input.text = "Map name"
-
-
-
-if __name__ == "__main__":
-    game = Game()
-    game.play()
