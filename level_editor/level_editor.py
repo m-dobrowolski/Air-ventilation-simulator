@@ -148,7 +148,3 @@ class LevelEditor():
         self.screen.blit(msg_img, msg_rect)
 
         self.file_name_input.is_visible = True
-
-
-
-

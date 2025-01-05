@@ -52,7 +52,10 @@ class Game:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         # check if clicked outside box and is still writing
                         self.current_text_box.detect_collision()
-                self._in_editor_controls(event)
+                map_path = self._in_editor_controls(event)
+                if map_path:
+                    pygame.quit()
+                    return map_path
 
             # not before event loop to avoid bugs
             self.mouse_pressed = pygame.mouse.get_pressed()
@@ -83,5 +86,7 @@ class Game:
 
             if self.editor.display_save_window and event.key == pygame.K_RETURN:
                 self.editor.display_save_window = False
-                self.editor.save_map(f'level_editor/maps/{self.editor.file_name_input.text}')
-                self.editor.file_name_input.text = "Map name"
+                map_path = f'level_editor/maps/{self.editor.file_name_input.text}'
+                self.editor.save_map(map_path)
+                return map_path
+        return None

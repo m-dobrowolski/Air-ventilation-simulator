@@ -12,7 +12,6 @@ FLOW_UP = 4
 FLOW_LEFT = 5
 FLOW_DOWN = 6
 
-# SKIP_ITERATIONS = 0
 
 def load_map(path):
     with open(path, 'r') as fh:

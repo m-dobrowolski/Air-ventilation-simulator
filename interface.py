@@ -13,7 +13,7 @@ def clear():
 
 def wrong_choice():
     print("Wrong choice")
-    input("Press any key to continue...")
+    input("Press enter to continue...")
 
 def choose_map():
     maps = os.listdir(MAPS_DIR)
@@ -40,6 +40,8 @@ def choose_map():
         except ValueError:
             wrong_choice()
 
+def set_map_options():
+    pass
 
 def main():
     while True:
@@ -56,7 +58,12 @@ def main():
                 run_simulation(map_path)
         elif choice == '2':
             level_editor = Game()
-            level_editor.play()
+            map_path = level_editor.play()
+            if map_path:
+                print(map_path)
+                input("Map saved successfully. Press enter to continue.")
+                # TODO: enable adding map options, e.g. setting speed
+                # set_map_options(map_path)
         elif choice == 'q':
             break
         else:
