@@ -31,14 +31,10 @@ def mask(shape, map_data, required_type):
             end_x = start_x + 10
             if type == required_type:
                 data[start_y:end_y, start_x:end_x] = True
-        if required_type == FLOW_DOWN:
-            print(f'{start_y}:{end_y}')
-            print(row)
     return data
 
-def main():
-    map_data = load_map('object_editor/maps/mymap')
-    # map_data = load_map('object_editor/maps/mapmapmap')
+def run_simulation(path_to_map):
+    map_data = load_map(path_to_map)
 
     # Simulation parameters
     Nx          = 200 # map_data["Nx"]    # resolution x-dir
@@ -138,7 +134,3 @@ def main():
             plt.imshow(np.sqrt(ux**2+uy**2))
             plt.pause(0.01)
             plt.cla()
-
-
-if __name__ == "__main__":
-    main()
