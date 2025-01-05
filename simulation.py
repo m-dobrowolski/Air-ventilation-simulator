@@ -12,7 +12,7 @@ FLOW_UP = 4
 FLOW_LEFT = 5
 FLOW_DOWN = 6
 
-SKIP_ITERATIONS = 0
+# SKIP_ITERATIONS = 0
 
 def load_map(path):
     with open(path, 'r') as fh:
@@ -33,7 +33,16 @@ def mask(shape, map_data, required_type):
                 data[start_y:end_y, start_x:end_x] = True
     return data
 
-def run_simulation(path_to_map, timesteps_num=1000):
+def run_simulation(
+        path_to_map,
+        timesteps_num=2000,
+        skip_iterations=0,
+        is_interactive=False,
+        right_speed=1.2,
+        up_speed=1.2,
+        left_speed=1.2,
+        down_speed=1.2
+    ):
     map_data = load_map(path_to_map)
 
     # Simulation parameters
@@ -71,8 +80,8 @@ def run_simulation(path_to_map, timesteps_num=1000):
     # F[outside, 3] = 1.5
     # F[interior, :] = 1
 
-    # Uncomment for interactive plot
-    # plt.ion()
+    if is_interactive:
+        plt.ion()
 
     # Simulation Main Loop
     for it in tqdm(range(Nt)):
@@ -84,13 +93,13 @@ def run_simulation(path_to_map, timesteps_num=1000):
 
         # Air flow
         if is_flow_right:
-            F[flow_right, 3] = 1.5
+            F[flow_right, 3] = right_speed
         if is_flow_up:
-            F[flow_up, 1] = 1.5
+            F[flow_up, 1] = up_speed
         if is_flow_left:
-            F[flow_left, 7] = 1.5
+            F[flow_left, 7] = left_speed
         if is_flow_down:
-            F[flow_down, 5] = 1.5
+            F[flow_down, 5] = down_speed
 
 
         # Drift
@@ -123,14 +132,15 @@ def run_simulation(path_to_map, timesteps_num=1000):
 
         F += -(1.0/tau) * (F - Feq)
 
-        # if it >= SKIP_ITERATIONS:
-        #     plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
-        #     plt.legend()
+        if it >= skip_iterations:
+            if is_interactive:
+                plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
+                plt.legend()
 
-        #     plt.pause(0.001)
-        #     plt.cla()
-
-        if it % 100 == 0:
-            plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
-            plt.pause(0.01)
-            plt.cla()
+                plt.pause(0.001)
+                plt.cla()
+            else:
+                if it % 100 == 0:
+                    plt.imshow(np.sqrt(ux**2+uy**2), origin='lower')
+                    plt.pause(0.01)
+                    plt.cla()
