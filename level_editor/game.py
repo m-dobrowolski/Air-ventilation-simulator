@@ -85,6 +85,13 @@ class Game:
                 self.editor.is_tileset_shown = not self.editor.is_tileset_shown
             elif event.key == pygame.K_s:
                 self.editor.display_save_window = True
+                self.editor.file_name_input.set_active()
+            elif event.key == pygame.K_ESCAPE:
+                if self.editor.display_save_window:
+                    self.editor.display_save_window = False
+                    self.editor.file_name_input.text = 'Map name'
+                    self.editor.file_name_input.set_inactive()
+
 
             if self.editor.display_save_window and event.key == pygame.K_RETURN:
                 self.editor.display_save_window = False

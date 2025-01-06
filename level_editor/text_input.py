@@ -91,6 +91,15 @@ class TextInput():
         self.is_writing = False
         return False
 
+    def set_active(self):
+        self.game.current_text_box = self
+        self.is_writing = True
+        self.cursor_index = len(self.text)
+
+    def set_inactive(self):
+        self.game.current_text_box = None
+        self.is_writing = False
+
     def _calculate_cursor_pos(self):
         if self.img_rect is not None:
             self.cursor_x = (
