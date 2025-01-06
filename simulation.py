@@ -1,6 +1,5 @@
 import numpy as np
 import json
-import signal
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
@@ -42,18 +41,11 @@ def handle_close(event):
     RUNNING = False
 
 
-def exit_gracefully():
-    global RUNNING
-    print("Exiting gracefully...")
-    RUNNING = False
-
-
 def run_simulation(
         path_to_map,
         timesteps_num=2000,
         view_step=100,
         skip_iterations=0,
-        is_interactive=False,
         right_speed=1.2,
         up_speed=1.2,
         left_speed=1.2,
@@ -61,8 +53,6 @@ def run_simulation(
     ):
     global RUNNING
     RUNNING = True
-
-    signal.signal(signal.SIGINT, lambda sig, frame: exit_gracefully())
 
     map_data = load_map(path_to_map)
 
@@ -97,15 +87,8 @@ def run_simulation(
     # Fill whole map with ones and add some perturbations
     F = np.ones((Ny,Nx,NL)) + 0.03*np.random.randn(Ny,Nx,NL)
 
-    # Initial interior and outside conditions
-    # F[outside, 3] = 1.5
-    # F[interior, :] = 1
-
     fig, ax = plt.subplots()
     fig.canvas.mpl_connect('close_event', handle_close)
-
-    if is_interactive:
-        plt.ion()
 
     # Simulation Main Loop
     for it in tqdm(range(Nt)):
@@ -125,14 +108,13 @@ def run_simulation(
         if is_flow_down:
             F[flow_down, 5] = down_speed
 
-
         # Drift
         for i, cx, cy in zip(range(NL), cxs, cys):
             F[:,:,i] = np.roll(F[:,:,i], cx, axis=1)
             F[:,:,i] = np.roll(F[:,:,i], cy, axis=0)
 
         # Set reflective boundaries
-        # Skip first iteration for avoiding bug (initial reflection, although air is not  moving)
+        # Skip first iteration for avoiding bug (initial reflection, although air is not moving)
         if it > 1:
             bndryF = F[obstacles,:]
             bndryF = bndryF[:,[0,5,6,7,8,1,2,3,4]]
@@ -148,7 +130,6 @@ def run_simulation(
         ux[obstacles] = 0
         uy[obstacles] = 0
 
-
         # Apply Collision
         Feq = np.zeros(F.shape)
         for i, cx, cy, w in zip(range(NL), cxs, cys, weights):
@@ -156,7 +137,7 @@ def run_simulation(
 
         F += -(1.0/tau) * (F - Feq)
 
-        if it >= skip_iterations and (is_interactive or it % view_step == 0):
+        if it >= skip_iterations and  it % view_step == 0:
             velocity = np.sqrt(ux ** 2 + uy ** 2)
             ax.clear()
 
@@ -170,11 +151,7 @@ def run_simulation(
 
             plt.draw()
 
-            if is_interactive:
-                plt.pause(0.001)
-            else:
-                pass
-                plt.pause(0.01)
+            plt.pause(0.01)
 
         if not RUNNING:
             break
