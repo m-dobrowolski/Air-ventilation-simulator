@@ -1,15 +1,10 @@
-import sys
-
 import pygame
 
 from level_editor.settings import Settings
-# from tilemap import Tilemap
 from level_editor.level_editor import LevelEditor
-from level_editor.text_input import TextInput
 from level_editor.tileset import Tileset
 
 class Game:
-    # game states
     def __init__(self):
         pygame.init()
 
@@ -31,9 +26,6 @@ class Game:
 
         # used for blocking player controls when writing to text box
         self.current_text_box = None
-
-        # self.text_input = TextInput(self, pygame.Rect(10, 10, 100, 30),
-        #                             24, 'black', 'white')
 
     def play(self):
         game_active = True
