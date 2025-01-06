@@ -51,6 +51,7 @@ def exit_gracefully():
 def run_simulation(
         path_to_map,
         timesteps_num=2000,
+        view_step=100,
         skip_iterations=0,
         is_interactive=False,
         right_speed=1.2,
@@ -155,7 +156,7 @@ def run_simulation(
 
         F += -(1.0/tau) * (F - Feq)
 
-        if it >= skip_iterations and (is_interactive or it % 100 == 0):
+        if it >= skip_iterations and (is_interactive or it % view_step == 0):
             velocity = np.sqrt(ux ** 2 + uy ** 2)
             ax.clear()
 

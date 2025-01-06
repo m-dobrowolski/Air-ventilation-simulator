@@ -44,26 +44,55 @@ def set_map_options():
     pass
 
 def main():
+    sim_iterations = 2000
+    view_step = 100
+
+
     while True:
         clear()
 
         print('1. Start simulation.')
         print('2. Level editor.')
+        print('3. Simulation options')
         print('q. Exit.')
 
         choice = input('Your choice: ')
         if choice == '1':
             map_path = choose_map()
             if map_path:
-                run_simulation(map_path)
+                run_simulation(map_path, timesteps_num=sim_iterations, view_step=view_step)
         elif choice == '2':
             level_editor = Game()
             map_path = level_editor.play()
             if map_path:
                 print(map_path)
                 input("Map saved successfully. Press enter to continue.")
-                # TODO: enable adding map options, e.g. setting speed
-                # set_map_options(map_path)
+        elif choice == '3':
+            clear()
+            while True:
+                try:
+                    iterations = int(input('Enter desired amount of simulation iterations: (default 2000):'))
+                    if iterations > 0:
+                        sim_iterations = iterations
+                    else:
+                        wrong_choice()
+                        continue
+
+                    step = int(input('Every how many sim steps to update the view (default 100):'))
+                    if step > 0:
+                        view_step = step
+                        break
+                    else:
+                        wrong_choice()
+                        continue
+
+                except ValueError as e:
+                    wrong_choice()
+
+
+
+            continue
+
         elif choice == 'q':
             break
         else:
