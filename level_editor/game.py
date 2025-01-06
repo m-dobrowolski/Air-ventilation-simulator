@@ -61,7 +61,7 @@ class Game:
             self.mouse_pressed = pygame.mouse.get_pressed()
 
             self.screen.fill("white")
-            if not self.ignore_click:
+            if not self.ignore_click and not self.editor.display_save_window:
                 if self.mouse_pressed[0]:
                     self.editor.swap_tile()
             self.editor.draw()
@@ -71,9 +71,12 @@ class Game:
 
     def _in_editor_controls(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if not self.ignore_click:
+            if not self.ignore_click and not self.editor.display_save_window:
                 success = self.editor.change_tile()
                 self.ignore_click = success
+            if self.editor.display_save_window is True:
+                self.editor.file_name_input.detect_collision()
+
         elif event.type == pygame.MOUSEBUTTONUP:
             self.ignore_click = False
 
@@ -82,7 +85,6 @@ class Game:
                 self.editor.is_tileset_shown = not self.editor.is_tileset_shown
             elif event.key == pygame.K_s:
                 self.editor.display_save_window = True
-                self.editor.file_name_input.detect_collision()
 
             if self.editor.display_save_window and event.key == pygame.K_RETURN:
                 self.editor.display_save_window = False

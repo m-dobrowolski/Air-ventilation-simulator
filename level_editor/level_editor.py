@@ -72,7 +72,7 @@ class LevelEditor():
                 self.tiles.add(Tile(Rect(x, y, width, height)))
 
     def swap_tile(self):
-        """Swap current tile to the tile selected from tileset."""
+        """Put current tile on a map in the place of click."""
         for tile in self.tiles:
             if tile.rect.collidepoint(self.game.mouse_pos):
                 # TODO: tile.update() - updates image and tile type
@@ -82,7 +82,7 @@ class LevelEditor():
         return False
 
     def change_tile(self):
-        """Change clicked tile on a map to the current tile."""
+        """Change current tile to the one selected from tileset."""
         if self.is_tileset_shown:
             for tile in self.tileset_displayed:
                 if tile.rect.collidepoint(self.game.mouse_pos):
