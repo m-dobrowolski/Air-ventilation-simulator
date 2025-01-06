@@ -40,7 +40,9 @@ class Game:
                     # pass every key to write in current text box
                     # stop other controls
                     if event.type == pygame.KEYDOWN:
-                        self.current_text_box.handle_input(event.key)
+                        keys = pygame.key.get_pressed()
+                        is_shift = keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]
+                        self.current_text_box.handle_input(event.key, is_shift)
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         # check if clicked outside box and is still writing
                         self.current_text_box.detect_collision()

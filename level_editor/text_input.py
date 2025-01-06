@@ -49,8 +49,23 @@ class TextInput():
             self.img_rect.midleft = self.rect.midleft
             self.old_text = self.text
 
-    def handle_input(self, key):
-        if (key >= pygame.K_a and key <= pygame.K_z) or key == pygame.K_SPACE:
+    def _upper(self, key):
+        if (key >= pygame.K_a and key <= pygame.K_z):
+            return key - 32
+        if key == pygame.K_MINUS:
+            return 95 # '_'
+
+    def handle_input(self, key, is_shift=False):
+        if (
+            # Allowed keys
+            (key >= pygame.K_a and key <= pygame.K_z) or
+            (key >= pygame.K_0 and key <= pygame.K_9) or
+            key == pygame.K_SPACE or
+            key == pygame.K_PERIOD or
+            key == pygame.K_MINUS
+        ):
+            if is_shift:
+                key = self._upper(key)
             self._write_key(key)
         elif key == pygame.K_BACKSPACE:
             self._del_letter()
