@@ -1,5 +1,11 @@
 # Symulacja procesu wentylacji powietrza w pomieszczeniach
 
+Projekt z przedmiotu Fizyka Ogólna [FO] w semestrze 2024Z.
+
+Skład zespołu:
+- Marcin Sikorski
+- Maciej Dobrowolski
+
 ## Opis
 Program symuluje dynamikę przepływu powietrza w środowisku 2D za pomocą metody Lattice Boltzmann (LBM). Symulacja odbywa się na mapie zdefiniowaniej w pliku JSON, którą można utworzyć za pomocą dedykowanego edytora. Mapa określa układ środowiska, w tym przeszkody i otwarte przestrzenie. Można również określić początkowy przepływ powietrza. Wizualizacja wyników pokazuje pole prędkości przepływu powietrza w czasie.
 

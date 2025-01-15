@@ -44,20 +44,20 @@ def choose_map():
 
 
 def set_map_options():
-    sim_iterations = 2000
-    view_step = 100
+    sim_iterations = 1000
+    view_step = 20
 
     clear()
     while True:
         try:
-            iterations = int(input('Enter desired amount of simulation iterations: (default 2000):'))
+            iterations = int(input(f'Enter desired amount of simulation iterations: (current: {sim_iterations}):'))
             if iterations > 0:
                 sim_iterations = iterations
             else:
                 wrong_choice()
                 continue
 
-            step = int(input('Every how many sim steps to update the view (default 100):'))
+            step = int(input(f'Every how many sim steps to update the view (current: {view_step}):'))
             if step > 0:
                 view_step = step
                 break
