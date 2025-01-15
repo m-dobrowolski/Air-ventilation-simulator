@@ -70,9 +70,11 @@ def run_simulation(
 
     shape = (Ny, Nx)
 
+    # May be used to define separate conditions inside/outside the room.
     outside = mask(shape, map_data, OUTSIDE)
-    obstacles = mask(shape, map_data, OBSTACLE)
     interior = mask(shape, map_data, INTERIOR)
+
+    obstacles = mask(shape, map_data, OBSTACLE)
     flow_right = mask(shape, map_data, FLOW_RIGHT)
     flow_up = mask(shape, map_data, FLOW_UP)
     flow_left = mask(shape, map_data, FLOW_LEFT)
