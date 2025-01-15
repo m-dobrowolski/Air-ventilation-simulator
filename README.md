@@ -27,6 +27,31 @@ Uruchom za pomocą pythona plik _interface.py_
 ```
 W konsoli uruchomi się interfejs potrzebny do uruchomienia symulacji.
 
+## Interfejs
+Interfejs wygląda w nastepujący sposób
+```bash
+    1. Start simulation.
+    2. Level editor.
+    3. Simulation options
+    q. Exit.
+    Your choice:
+```
+Mamy do wyboru następujące opcje:
+1. Rozpoczyna symulację z aktualnie ustawionymi parametrami. Umożliwia przed rozpoczęciem wybór mapy.
+2. Uruchamia edytor map.
+3. Umożliwia zmianę parametrów symulacji.
+
+### Sterowanie edytorem map
+W celu tworzenia mapy wybieramy myszką typy bloków w lewym górnym rogu okna i umieszczamy je na planszy.
+- __b__ - chowa pasek wyboru typu bloku
+- __s__ - umożliwia zapis mapy, __ESC__ - anuluje operację, __ENTER__ zapisuje mapę.
+
+Mamy kilka możliwych bloków:
+- blok biały - pusta przestrzeń
+- blok czarny - przeszkoda
+- blok zielony - wnętrze pomieszczenia (nieużywane, może posłużyć w kodzie do zdefiniowania innych warunków początkowych)
+- strzałki - stymulują ruch powietrza w danym kierunku
+
 ## Opis modelu symulacji
 
 W każdym węźle siatki znajduje się 9 kierunków prędkości. Są 4 połączenia: w górę, dół, lewo, i prawo, 4 połączenia po przekątnych oraz 1 połączenie reprezentujące zerową prędkość. Każdy węzeł siatki ma przypisaną wagę ω<sub>i</sub>
